@@ -3,6 +3,7 @@ package com.example.pertemuan_9.view
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.MaterialTheme
@@ -91,6 +92,22 @@ fun BodyHome(
 }
 
 @Composable
-fun ListSiswa(itemSiswa: List<Siswa>, modifier: Modifier) {
+fun ListSiswa(
+    itemSiswa: List<Siswa>,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(modifier = modifier) {
+        items(items = itemSiswa, key = { it.id }) { person ->
+            DataSiswa(
+                siswa = person,
+                modifier = Modifier
+                    .padding(dimensionResource(id = R.dimen.padding_small))
+            )
+        }
+    }
+}
+
+@Composable
+fun DataSiswa(siswa: Int, modifier: Modifier) {
     TODO("Not yet implemented")
 }
