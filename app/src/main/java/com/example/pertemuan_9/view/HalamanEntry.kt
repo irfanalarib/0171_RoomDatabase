@@ -25,6 +25,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pertemuan_9.R
 import com.example.pertemuan_9.uicontroller.DestinasiEntry
+import com.example.pertemuan_9.uicontroller.SiswaTopAppBar
 import com.example.pertemuan_9.viewmodel.DetailsSiswa
 import com.example.pertemuan_9.viewmodel.EntryViewModel
 import com.example.pertemuan_9.viewmodel.PenyediaViewModel
@@ -37,7 +38,7 @@ fun EntrySiswaScreen(
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: EntryViewModel = viewModel(factory = PenyediaViewModel.Factory)
-){
+) {
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
@@ -50,7 +51,7 @@ fun EntrySiswaScreen(
                 navigateUp = navigateBack
             )
         }
-    ){ innerPadding ->
+    ) { innerPadding ->
         EntrySiswaBody(
             uiStateSiswa = viewModel.uiStateSiswa,
             onSiswaValueChange = viewModel::updateUiState,
