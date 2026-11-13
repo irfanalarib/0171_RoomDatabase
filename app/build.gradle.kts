@@ -55,7 +55,7 @@ dependencies {
 
     //navigasi
     implementation(libs.navigation.compose)
-    
+
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
