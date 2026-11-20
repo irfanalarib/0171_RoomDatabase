@@ -26,7 +26,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pertemuan_9.R
 import com.example.pertemuan_9.uicontroller.DestinasiEntry
 import com.example.pertemuan_9.uicontroller.SiswaTopAppBar
-import com.example.pertemuan_9.viewmodel.DetailsSiswa
+import com.example.pertemuan_9.viewmodel.DetailSiswa
 import com.example.pertemuan_9.viewmodel.EntryViewModel
 import com.example.pertemuan_9.viewmodel.PenyediaViewModel
 import com.example.pertemuan_9.viewmodel.UIStateSiswa
@@ -72,7 +72,7 @@ fun EntrySiswaScreen(
 @Composable
 fun EntrySiswaBody(
     uiStateSiswa: UIStateSiswa,
-    onSiswaValueChange: (DetailsSiswa) -> Unit,
+    onSiswaValueChange: (DetailSiswa) -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -81,7 +81,7 @@ fun EntrySiswaBody(
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium))
     ) {
         FormInputSiswa(
-            detailSiswa = uiStateSiswa.detailsSiswa,
+            detailSiswa = uiStateSiswa.detailSiswa,
             onValueChange = onSiswaValueChange,
             modifier = Modifier.fillMaxWidth()
         )
@@ -99,9 +99,9 @@ fun EntrySiswaBody(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FormInputSiswa(
-    detailSiswa: DetailsSiswa,
+    detailSiswa: DetailSiswa,
     modifier: Modifier = Modifier,
-    onValueChange: (DetailsSiswa) -> Unit = {},
+    onValueChange: (DetailSiswa) -> Unit = {},
     enabled: Boolean = true
 ) {
     Column(
