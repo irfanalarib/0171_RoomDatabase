@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pertemuan_9.repositori.RepositoriSiswa
-import com.example.pertemuan_9.uicontroller.DestinasiDetailSiswa
+import com.example.pertemuan_9.view.DestinasiDetailSiswa
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
@@ -16,7 +16,9 @@ class DetailViewModel(
     private val repositoriSiswa: RepositoriSiswa
 ) : ViewModel() {
 
-    private val idSiswa: Int = checkNotNull(savedStateHandle[DestinasiDetailSiswa.itemIdArg])
+    private val idSiswa: Int = savedStateHandle.get<String>(DestinasiDetailSiswa.itemIdArg)?.toIntOrNull()
+        ?: savedStateHandle.get<Int>(DestinasiDetailSiswa.itemIdArg)
+        ?: 0
 
     val uiDetailState: StateFlow<DetailSiswaUiState> =
         repositoriSiswa.getSiswaStream(idSiswa)
