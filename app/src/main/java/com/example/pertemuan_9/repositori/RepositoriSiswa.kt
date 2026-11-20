@@ -20,4 +20,7 @@ class OfflineRepositoriSiswa(
     override fun getAllSiswaStream(): Flow<List<Siswa>> = siswaDao
         .getAllSiswa()
     override suspend fun insertSiswa(siswa: Siswa) = siswaDao.insert(siswa)
+
+    //edit2 : tambahkan 3 override berikut:
+    override fun getSiswaStream(id: Int): Flow<Siswa?> = siswaDao.getSiswa(id)
 }
