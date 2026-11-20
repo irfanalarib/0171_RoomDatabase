@@ -2,24 +2,31 @@ package com.example.pertemuan_9.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.pertemuan_9.repositori.RepositoriSiswa
+import com.example.pertemuan_9.uicontroller.DestinasiDetailSiswa
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 
 class DetailViewModel(
     savedStateHandle: SavedStateHandle,
     private val repositoriSiswa: RepositoriSiswa
 ) : ViewModel() {
 
-    private val idSiswa: Int = checkNotNull(savedStateHandle[DestinasiEditSiswa.itemIdArg])
+    private val idSiswa: Int = checkNotNull(savedStateHandle[DestinasiDetailSiswa.itemIdArg])
 
-    val uiDetailState: StateFlow<UIStateSiswa> =
+    val uiDetailState: StateFlow<DetailSiswaUiState> =
         repositoriSiswa.getSiswaStream(idSiswa)
             .filterNotNull()
             .map {
-                UIStateSiswa(detailSiswa = it.toDetailSiswa())
+                DetailSiswaUiState(detailSiswa = it.toDetailSiswa())
             }.stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
-                initialValue = UIStateSiswa()
+                initialValue = DetailSiswaUiState()
             )
 
     suspend fun deleteSiswa() {
@@ -29,10 +36,11 @@ class DetailViewModel(
     companion object {
         private const val TIMEOUT_MILLIS = 5_000L
     }
+
+    /**
+     * Ui state for item detail screen
+     */
+    data class DetailSiswaUiState(
+        val detailSiswa: DetailSiswa = DetailSiswa(),
+    )
 }
-
-
-
-data class DetailSiswaUiState(
-    val detailSiswa: DetailSiswa = DetailSiswa(),
-)
