@@ -1,5 +1,6 @@
 package com.example.pertemuan_9.view
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,7 +19,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -35,15 +35,16 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pertemuan_9.R
 import com.example.pertemuan_9.room.Siswa
-import com.example.pertemuan_9.uicontroller.DestinasiHome
-import com.example.pertemuan_9.uicontroller.SiswaTopAppBar
+import com.example.pertemuan_9.view.uicontroller.DestinasiHome
+import com.example.pertemuan_9.view.uicontroller.SiswaTopAppBar
 import com.example.pertemuan_9.viewmodel.HomeViewModel
-import com.example.pertemuan_9.viewmodel.provider.PenyediaViewModel
+import com.example.pertemuan_9.viewmodel.PenyediaViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navigateToItemEntry: () -> Unit,
+    navigateToItemUpdate: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
@@ -74,7 +75,7 @@ fun HomeScreen(
         val uiStateSiswa by viewModel.homeUiState.collectAsState()
         BodyHome(
             itemSiswa = uiStateSiswa.listSiswa,
-            onDeleteClick = { viewModel.deleteSiswa(it) },
+            onSiswaClick = navigateToItemUpdate,
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
@@ -85,7 +86,7 @@ fun HomeScreen(
 @Composable
 fun BodyHome(
     itemSiswa: List<Siswa>,
-    onDeleteClick: (Siswa) -> Unit,
+    onSiswaClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -101,7 +102,7 @@ fun BodyHome(
         } else {
             ListSiswa(
                 itemSiswa = itemSiswa,
-                onDeleteClick = onDeleteClick,
+                onSiswaClick = { onSiswaClick(it.id) },
                 modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
             )
         }
@@ -111,16 +112,16 @@ fun BodyHome(
 @Composable
 fun ListSiswa(
     itemSiswa: List<Siswa>,
-    onDeleteClick: (Siswa) -> Unit,
+    onSiswaClick: (Siswa) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(modifier = modifier) {
         items(items = itemSiswa, key = { it.id }) { person ->
             DataSiswa(
                 siswa = person,
-                onDeleteClick = onDeleteClick,
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
+                    .clickable { onSiswaClick(person) }
             )
         }
     }
@@ -129,7 +130,6 @@ fun ListSiswa(
 @Composable
 fun DataSiswa(
     siswa: Siswa,
-    onDeleteClick: (Siswa) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -161,13 +161,6 @@ fun DataSiswa(
                 text = siswa.alamat,
                 style = MaterialTheme.typography.titleMedium
             )
-            OutlinedButton(
-                onClick = { onDeleteClick(siswa) },
-                modifier = Modifier.fillMaxWidth(),
-                shape = MaterialTheme.shapes.small
-            ) {
-                Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error)
-            }
         }
     }
 }
