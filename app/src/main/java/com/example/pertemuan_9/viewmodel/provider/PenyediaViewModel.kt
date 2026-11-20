@@ -1,16 +1,18 @@
 package com.example.pertemuan_9.viewmodel.provider
 
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
+import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.pertemuan_9.AplikasiSiswa
 import com.example.pertemuan_9.viewmodel.DetailViewModel
 import com.example.pertemuan_9.viewmodel.EditViewModel
 import com.example.pertemuan_9.viewmodel.EntryViewModel
 import com.example.pertemuan_9.viewmodel.HomeViewModel
-import com.example.pertemuan_9.viewmodel.aplikasiSiswa
 
-object PenyediaViewModel{
-    val factory = viewModelFactory {
+object PenyediaViewModel {
+    val Factory = viewModelFactory {
         initializer {
             HomeViewModel(aplikasiSiswa().container.repositoriSiswa)
         }
@@ -18,8 +20,6 @@ object PenyediaViewModel{
         initializer {
             EntryViewModel(aplikasiSiswa().container.repositoriSiswa)
         }
-
-//edit : tambah initializer untuk DetailViewModel
 
         initializer {
             DetailViewModel(
@@ -29,7 +29,13 @@ object PenyediaViewModel{
         }
 
         initializer {
-            EditViewModel(this.createSavedStateHandle(), aplikasiSiswa().container.repositoriSiswa)
+            EditViewModel(
+                this.createSavedStateHandle(),
+                aplikasiSiswa().container.repositoriSiswa
+            )
         }
     }
 }
+
+fun CreationExtras.aplikasiSiswa(): AplikasiSiswa =
+    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as AplikasiSiswa)
